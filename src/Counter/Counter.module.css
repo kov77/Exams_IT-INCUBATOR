@@ -1,0 +1,60 @@
+
+.counter {
+    width: 300px;
+    height: 250px;
+    padding: 20px;
+    display: grid;
+    border: 4px solid deepskyblue;
+    border-radius: 10px;
+    background-color: dimgrey;
+}
+
+.numClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: deepskyblue;
+    font-size: 70px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.maxNumClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    font-size: 100px;
+    background-color: deepskyblue;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+.buttonsClass {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    background-color: dimgrey;
+    border: 4px solid deepskyblue;
+    border-radius: 5px;
+}
+
+.btnClass {
+    box-sizing: border-box;
+    width: 60px;
+    height: 40px;
+    background-color: deepskyblue;
+    border-radius: 5px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnClass:hover {
+    background-color: dodgerblue;
+}
+.btnClass:disabled {
+    opacity: 0.5;
+}
