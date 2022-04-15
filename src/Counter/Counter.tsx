@@ -1,27 +1,52 @@
 import classes from './Counter.module.css';
-import { useState} from "react";
+import {MouseEvent} from "react"
 
-const Counter = () => {
+type PropsType = {
+    inputValue: number
+    incBtnHandler: () => void
+    resetBtnHandler: (e: MouseEvent<HTMLButtonElement>) => void
+    maxValue: number
+    startValue: number
+}
 
-    let[inputValue, setInputValue] = useState(0)
+// {props.startValue === 0 && props.maxValue === 0 ?
+//      :  <span className={classes.screenMessage}>enter value and press "set"</span>
+//     (props.startValue < 0 || props.maxValue <= props.startValue ?
+//         <span className={classes.screenErrorMessage}>incorect value</span> :
+//             (props.inputValue === 0 ?
+//             <span className={classes.screenMessage}>enter value and press "set"</span> : props.inputValue))}
 
-    const incBtnHandler = () => {
-        inputValue++
-        inputValue <= 5 ? setInputValue(inputValue) : inputValue = 5
+
+
+const Counter = (props: PropsType) => {
+    const setDisabletBtn = props.startValue >= props.maxValue ||
+        props.startValue < 0 ||
+        props.inputValue === 0
+
+    function setScreenValue() {
+        if(props.startValue === 0 && props.maxValue === 0) {
+            return <span className={classes.screenMessage}>enter value and press "set"</span>
+        } else if(props.startValue < 0 || props.maxValue <= props.startValue) {
+            return <span className={classes.screenErrorMessage}>incorect value</span>
+        } else if (props.inputValue === 0) {
+            return <span className={classes.screenMessage}>enter value and press "set"</span>
+        } else {
+            return props.inputValue
+        }
     }
-
-    const resetBtnHandler = () => {
-        setInputValue(0)
-    }
-
-
 
     return <div className={classes.counter}>
-        <div className={inputValue < 5 ? classes.numClass : classes.maxNumClass}>{inputValue}</div>
+        <div
+            className={`${classes.mainScreenClass} ${props.inputValue < props.maxValue ? classes.numClass : classes.maxNumClass}`}>{setScreenValue()}</div>
         <div className={classes.buttonsClass}>
-            <button className={classes.btnClass} disabled={inputValue === 5} onClick={incBtnHandler}>inc</button>
-            <button className={classes.btnClass} disabled={inputValue === 0} onClick={resetBtnHandler}>reset</button>
+            <button className={classes.btnClass} disabled={props.inputValue === props.maxValue || setDisabletBtn}
+                    onClick={props.incBtnHandler}>inc
+            </button>
+            <button className={classes.btnClass} disabled={setDisabletBtn}
+                    onClick={props.resetBtnHandler}>reset
+            </button>
         </div>
+        <span className={classes.noticeClass}>* Press "Alt + reset" to completely reset the counter</span>
     </div>
 }
 
