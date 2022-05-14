@@ -12,6 +12,7 @@
 }
 
 .mainScreenClass {
+    padding: 15px;
     height: 145px;
     display: flex;
     justify-content: center;

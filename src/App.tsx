@@ -1,65 +1,58 @@
-import React, {ChangeEvent, MouseEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import './App.css';
-import Counter from "./Counter/Counter";
+import {Counter} from "./Counter/Counter";
 import SetCounter from "./Counter/SetCounter";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "./redux/redux-store";
+import {incBtnAC, resetBtnAC, SetCounterAC, SetMaxValueAC, SetStartValueAC} from "./redux/counter-reducer";
 
 
 function App() {
 
-    let startValueFromLocalStorage = JSON.parse(localStorage.getItem("StratCounterValue") !)
-    let maxValueFromLocalStorage = JSON.parse(localStorage.getItem("MaxCounterValue") !)
+    const startValue = useSelector<AppStateType, number>(state => state.counter.startValue);
+    const maxValue = useSelector<AppStateType, number>(state => state.counter.maxValue);
+    const inputValue = useSelector<AppStateType, number>(state => state.counter.inputValue);
+    const dispatch = useDispatch()
 
-    let [startValue, setStartValue]: any = useState(startValueFromLocalStorage)
-    let [maxValue, setMaxValue]: any = useState(maxValueFromLocalStorage)
-    let [inputValue, setInputValue] = useState(startValue)
-
-
-
-    const onChangeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setStartValue(e.currentTarget.value)
-
-    }
-    const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxValue(e.currentTarget.value)
-    }
-
-    const setCounterOnClickHandler = () => {
-        localStorage.setItem("StratCounterValue", JSON.stringify(startValue))
-        localStorage.setItem("MaxCounterValue", JSON.stringify(maxValue))
-        setInputValue(startValue)
+    const setCounter = () => {
+        dispatch(SetCounterAC(startValue))
 
     }
 
-    const incBtnHandler = () => {
-        inputValue++
-        inputValue <= maxValue ? setInputValue(inputValue) : inputValue = maxValue
+    const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(SetStartValueAC(+e.currentTarget.value))
+
+    }
+    const onChagheMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(SetMaxValueAC(+e.currentTarget.value))
     }
 
-    const resetBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
-        setInputValue(startValue)
-        if(e.altKey === true) {
-            localStorage.clear()
-            startValue = 0
-            setInputValue(startValue)
-            setStartValue(e.currentTarget.value)
-            setMaxValue(e.currentTarget.value)
-        }
+
+
+    const incBtn = () => {
+        dispatch(incBtnAC(inputValue, maxValue))
+    }
+
+    const resetBtn = () => {
+        dispatch(resetBtnAC(startValue))
     }
 
 
     return (
         <div className="App">
-            <SetCounter onChangeStartValueHandler={onChangeStartValueHandler}
-                        onChagheMaxValueHandler={onChangeMaxValueHandler}
-                        setCounterOnClickHandler={setCounterOnClickHandler}
+            <SetCounter onChangeStartValue={onChangeStartValue}
+                        onChagheMaxValue={onChagheMaxValue}
+                        setCounter={setCounter}
                         startValue={+startValue}
                         maxValue={+maxValue}
             />
-            <Counter startValue={+startValue}
-                     maxValue={+maxValue}
-                     incBtnHandler={incBtnHandler}
-                     resetBtnHandler={resetBtnHandler}
-                     inputValue={+inputValue}/>
+            <Counter
+                incBtn={incBtn}
+                resetBtn={resetBtn}
+                inputValue={+inputValue}
+                startValue={+startValue}
+                maxValue={+maxValue}
+                />
 
         </div>
     );
